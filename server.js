@@ -1,15 +1,17 @@
 import express from 'express';
-import route from './middleware/route.js'
+import cors from 'cors'; // Add CORS middleware
+import route from './middleware/route.js';
 
 const app = express();
 
-// Middleware for parsing JSON request bodies
+// Middleware for parsing JSON request bodies and enabling CORS
 app.use(express.json());
-const PORT = 3000
+app.use(cors());
 
-app.use("/", route)
+const PORT = process.env.PORT || 3000;
 
+app.use("/", route);
 
-app.listen(PORT, ()=>{
-    console.log(`Server runing on port: ${PORT}`)
-})
+app.listen(PORT, () => {
+    console.log(`Server running on port: ${PORT}`);
+});
