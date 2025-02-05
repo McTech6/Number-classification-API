@@ -1,8 +1,9 @@
 import express from 'express';
+import axios from 'axios'; // Importing axios for HTTP requests
 
 const router = express.Router();
 
-router.get("/api/classify-number", (req, res) => {
+router.get("/api/classify-number", async (req, res) => {
     const { number } = req.query;
 
     // Input validation
@@ -47,7 +48,7 @@ router.get("/api/classify-number", (req, res) => {
     };
 
     const parity =(num)=>{
-        return num % 2 === 0? true : false;
+        return num % 2 === 0 ? true : false;
     }
     const is_parity = parity(number)
 
@@ -63,15 +64,14 @@ router.get("/api/classify-number", (req, res) => {
 
     const digit_sum = sum_digit(number);
 
-    // Fun fact logic
+    // Fetching fun fact from Numbers API
     let fun_fact = null;
-    if (is_armstrong) {
-        const digits = num.toString().split('').map(Number);
-        const power = digits.length;
-        const breakdown = digits.map(digit => `${digit}^${power}`).join(" + ");
-        fun_fact = `${num} is an Armstrong number because ${breakdown} = ${num}`;
-    } else {
-        fun_fact = `Did you know? ${num} is not an Armstrong number, but it's still an interesting number!`;
+    try {
+        const response = await axios.get(`http://numbersapi.com/${num}?json`);
+        fun_fact = response.data.text;
+    } catch (error) {
+        console.error('Error fetching fun fact:', error);
+        fun_fact = `No fun fact available for ${num}.`;
     }
 
     // Response
