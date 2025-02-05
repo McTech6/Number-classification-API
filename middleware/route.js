@@ -64,15 +64,16 @@ router.get("/api/classify-number", async (req, res) => {
 
     const digit_sum = sum_digit(number);
 
+    
     // Fetching fun fact from Numbers API
-    let fun_fact = null;
-    try {
-        const response = await axios.get(`http://numbersapi.com/${num}?json`);
-        fun_fact = response.data.text;
-    } catch (error) {
-        console.error('Error fetching fun fact:', error);
-        fun_fact = `No fun fact available for ${num}.`;
-    }
+let fun_fact = null;
+try {
+    const response = await axios.get(`http://numbersapi.com/${num}/math?json`);
+    fun_fact = response.data.text;
+} catch (error) {
+    console.error('Error fetching fun fact:', error);
+    fun_fact = `No fun fact available for ${num}.`;
+}
 
     // Response
     res.json({
