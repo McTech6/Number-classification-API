@@ -54,26 +54,25 @@ router.get("/api/classify-number", (req, res) => {
     const is_armstrong = armstrong(num);
 
     const properties = []
-     if (is_armstrong) properties.push("armstrong")
+    if (is_armstrong) properties.push("armstrong");
     properties.push(is_parity ? "even" : "odd");
 
-     const sum_digit = (num)=>{
+    const sum_digit = (num)=>{
         return num.toString().split('').map(Number).reduce((acc, digit) => acc + digit, 0);
-     }
+    }
 
-     const digit_sum = sum_digit(number)
+    const digit_sum = sum_digit(number);
 
-     //fun fact
-
-     let fun_fact = null;
-     if (is_armstrong) {
-         const digits = num.toString().split('').map(Number);
-         const power = digits.length;
-         const breakdown = digits.map(digit => `${digit}^${power}`).join(" + ");
-         fun_fact = `${num} is an Armstrong number because ${breakdown} = ${num}`;
-     }
-
-    
+    // Fun fact logic
+    let fun_fact = null;
+    if (is_armstrong) {
+        const digits = num.toString().split('').map(Number);
+        const power = digits.length;
+        const breakdown = digits.map(digit => `${digit}^${power}`).join(" + ");
+        fun_fact = `${num} is an Armstrong number because ${breakdown} = ${num}`;
+    } else {
+        fun_fact = `Did you know? ${num} is not an Armstrong number, but it's still an interesting number!`;
+    }
 
     // Response
     res.json({
